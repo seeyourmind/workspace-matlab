@@ -1,0 +1,10 @@
+clear;clc;
+im = imread('1.png');
+Ii = DynamicMean(im);
+im = rgb2gray(im);
+X = KSW(im);
+Y = KSW(Ii);
+subplot(221);imshow(im);
+subplot(222);imshow(Ii);
+subplot(223);imshow(X);
+subplot(224);imshow(Y);
