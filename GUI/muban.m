@@ -1,0 +1,21 @@
+function varargin=函数名(h, eventdata, handles, varargin)  %函数名需要用英文改写 
+%此处添加算法，将clear \clear all\clc等命令删除
+%***************************************************************
+
+%***************************************************************
+
+%***************************************************************
+
+axes(handles.axes1);
+imagesc(img);       %图像显示在坐标轴1内  img为图像存储变量
+
+axes(handles.axes2);
+imagesc(img);       %图像显示在坐标轴2内  img为图像存储变量
+
+axes(handles.axes3);
+imagesc(img);    %图像显示在坐标轴3内  img为图像存储变量        
+
+axes(handles.axes4);
+imagesc(img);       %图像显示在坐标轴4内  img为图像存储变量
+
+edit(new_transform.m);%编辑 将调用函数和菜单关联

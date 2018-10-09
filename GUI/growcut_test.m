@@ -1,0 +1,109 @@
+%-- Tests growcut.m
+%-- Load image and seeds
+%img = imread('lotus.png');
+%labels = double(imread('labels.png'))-1;
+function varargin=growcut_test(hObject, eventdata, handles)
+[fileName,pathName]=uigetfile('*.jpg;*.jpeg;*.tif;*.tiff;*.bmp;*.png;*.pcx','Select an Image');%━━′
+if fileName==0       %fileNameuigetfile━━′━━
+   if ~exist('myImage','var')
+       myImage=[]; 
+   end
+else
+   PF=[pathName,fileName];
+   ext=PF(findstr(PF,'.')+1:end);% png,figext findstr
+   PFinfo=imfinfo(PF);%PFinfo
+   if strcmp(PFinfo.ColorType,'truecolor')>0  %′━━
+      myImage=imread(PF);
+      myImage=mean(myImage,3);       %
+   elseif strcmp(PFinfo.ColorType,'grayscale')>0
+      myImage=imread(PF);
+   elseif strcmp(PFinfo.ColorType,'indexed')>0
+      [myImage,MAP]=imread(PF);
+      myImage =ind2gray(myImage,MAP);%
+   end
+end
+[m]=uigetfile('*.jpg;*.jpeg;*.tif;*.tiff;*.bmp;*.png;*.pcx','Select an labels');%
+m=load(m);
+img = myImage;
+labels = m;
+img=img(:,:,1);
+u=double(img);
+
+axes(handles.axes2);
+imagesc(img);
+
+axes(handles.axes3);
+imagesc(labels);
+
+axes(handles.axes4);
+imagesc(img);
+
+% subplot(2,2,1), imshow(img);
+% subplot(2,2,2), imshow(labels,[]);
+% subplot(2,2,3), imshow(img);
+
+Nx=[-1 1 0 0 -1 -1 1];
+Ny=[0 0  -1 1 1 -1 1 -1];
+ maxC=255;
+% maxC=441.673;
+MAX_ITS=2;
+its=0;
+[m n] =size(img);
+
+strens=rand(m,n);
+% strens=ones(m,n);
+ for i=1:m
+     for j=1:n
+        if labels(i,j)~=0
+       strens(i,j)=1;
+         end
+     end
+ end
+ 
+%  converged=false;
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+while (true) 
+    its=its+1;
+%     converged=true;
+    
+  if (its==MAX_ITS) break;
+  end
+    
+  for i=2:m-1
+    for j=2:n-1
+       
+      for i1=-1:1
+        for   j1=-1:1
+          if i1~=0|j1~=0
+              clear C
+              C=abs(u(i,j)- u(i+i1,j+j1));
+      
+              g=1-(C/maxC);
+
+              clear C 
+
+             if g*strens(i+i1,j+j1)>strens(i,j)
+
+                 strens(i,j)=g*strens(i+i1,j+j1);
+           
+                 labels(i,j)=labels(i+i1,j+j1);
+                 %            converged=false;
+                 clear g
+ 
+             end
+          end
+        end
+      end
+  end
+
+end
+ 
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+end       
+% labels_out = medfilt2(labels,[3,3]);
+
+axes(handles.axes6);
+imagesc(labels);
+% subplot(2,2,4), 
+% 
+% imshow(labels);

@@ -1,0 +1,8 @@
+function varargin=new_transform(h, eventdata, handles, varargin)
+global i;
+edit('jicheng.m');
+name=get(handles.edit_name,'String');
+%将new_transform 改为菜单项的英文名  在括号前加函数名：
+str1='jicheng(';
+str2=
+new_transform=uimenu(gcf,'Label',name,'callback','jicheng('+name+',''gcbo,[],guidata(gcbo))');
