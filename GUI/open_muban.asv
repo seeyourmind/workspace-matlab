@@ -1,2 +1,0 @@
-function varargin=open(vargin)
-[]=uigetfile();
